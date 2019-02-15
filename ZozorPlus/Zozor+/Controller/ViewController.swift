@@ -11,78 +11,123 @@ import UIKit
 class ViewController: UIViewController {
     
     // MARK: - Properties
-    
+
     private let calculator = Calculator()
+
+    // MARK: - Enumeration
     
-    private var isExpressionCorrect: Bool {
-        if let stringNumber = calculator.stringNumbers.last {
-            if stringNumber.isEmpty {
-                if calculator.stringNumbers.count == 1 {
-                    let alertVC = UIAlertController(title: "Zéro!", message: "Démarrez un nouveau calcul !", preferredStyle: .alert)
-                    alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                    self.present(alertVC, animated: true, completion: nil)
-                } else {
-                    let alertVC = UIAlertController(title: "Zéro!", message: "Entrez une expression correcte !", preferredStyle: .alert)
-                    alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                    self.present(alertVC, animated: true, completion: nil)
-                }
-                return false
-            }
-        }
-        return true
+    private enum errors: Error {
+        case inCorrectExpression
+        case startNewCalcul
+        case enterNumber
     }
-
-    private var canAddOperator: Bool {
-        if let stringNumber = calculator.stringNumbers.last {
-            if stringNumber.isEmpty {
-                let alertVC = UIAlertController(title: "Zéro!", message: "Expression incorrecte !", preferredStyle: .alert)
-                alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-                self.present(alertVC, animated: true, completion: nil)
-                return false
-            }
-        }
-        return true
-    }
-
+    
     // MARK: - Outlets
 
     @IBOutlet private weak var textView: TextView!
     @IBOutlet private var numberButtons: [UIButton]!
+    @IBOutlet weak var floatButton: UIButton!
+    @IBOutlet weak var cleanButton: UIButton!
 
     // MARK: - Action
 
     @IBAction private func tappedNumberButton(_ sender: UIButton) {
-        for (i, numberButton) in numberButtons.enumerated() {
-            if sender == numberButton {
+        for (i, numberButton) in numberButtons.enumerated() where sender == numberButton {
                 calculator.addNewNumber(i)
-            }
+                updateDisplay()
         }
-        textView.updateDisplay()
+    }
+
+    @IBAction private func didTapCleanButton() {
+        cleanDisplay()
+    }
+
+    @IBAction private func didTapFloatButton() {
+        calculator.addFloatNumber()
+        updateDisplay()
     }
 
     @IBAction private func plus() {
-        if canAddOperator {
-            calculator.add()
-            textView.updateDisplay()
+        do {
+            try calculator.checkIfCanAddOperator(error: errors.enterNumber)
+        } catch errors.enterNumber {
+            displayError(expressionError: .enterNumber)
+            return
+        } catch {
+            displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
+            return
         }
+            calculator.add()
+            updateDisplay()
     }
 
     @IBAction private func minus() {
-        if canAddOperator {
-            calculator.subtract()
-            textView.updateDisplay()
+        do {
+            try calculator.checkIfCanAddOperator(error: errors.enterNumber)
+        } catch errors.enterNumber {
+            displayError(expressionError: .enterNumber)
+            return
+        } catch {
+            displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
+            return
         }
+            calculator.subtract()
+            updateDisplay()
     }
 
     @IBAction private func equal() {
-        calculateTotal()
-    }
-    
-    private func calculateTotal() {
-        if !isExpressionCorrect {
+        do {
+            try calculator.checkExpressionError(firstError: errors.startNewCalcul, secondError: errors.inCorrectExpression)
+        } catch errors.inCorrectExpression {
+            displayError(expressionError: .inCorrectExpression)
             return
+        } catch errors.startNewCalcul {
+            displayError(expressionError: .startNewCalcul)
+            return
+        } catch {
+            displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
         }
-        textView.printTotal()
+        printTotal()
+    }
+
+    // MARK: - Methods
+
+    private func displayError(expressionError error: errors) {
+        switch error {
+        case .inCorrectExpression:
+            displayError(alertTitle: "Expression Incorrect.", message: "Entrez une expression correct", actionTitle: "OK")
+            cleanDisplay()
+        case .startNewCalcul:
+            displayError(alertTitle: "Expression Incorrect", message: "Démarrez un nouveau calcul !", actionTitle: "OK")
+            cleanDisplay()
+        case .enterNumber:
+            displayError(alertTitle: "Expression Incorrect", message: "Vous devez d'abord entrer un chiffre.", actionTitle: "OK")
+            cleanDisplay()
+        }
+    }
+
+    private func displayError(alertTitle: String, message: String, actionTitle: String) {
+        let alertVC = UIAlertController(title: alertTitle, message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: actionTitle, style: .cancel, handler: nil))
+        present(alertVC, animated: true, completion: nil)
+    }
+
+    private func updateDisplay() {
+        let text = calculator.updateValues()
+        textView.text = text
+    }
+
+    private func printTotal() {
+        let total = calculator.calculateTotal()
+        textView.text = "\(total)"
+        calculator.clear()
+    }
+
+    private func cleanDisplay() {
+        calculator.clear()
+        textView.text = "0"
     }
 }
-

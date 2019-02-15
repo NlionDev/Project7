@@ -29,7 +29,7 @@
                                 <rect key="frame" x="50" y="522" width="314" height="220"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GZQ-ZL-Chx">
-                                        <rect key="frame" x="0.0" y="0.0" width="82" height="152"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="82" height="206"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6uw-jf-qlX">
                                                 <rect key="frame" x="0.0" y="0.0" width="82" height="44"/>
@@ -62,6 +62,17 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="tappedNumberButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wzA-WF-CXf"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifG-nm-kBT">
+                                                <rect key="frame" x="0.0" y="162" width="82" height="44"/>
+                                                <color key="backgroundColor" red="0.74834197759999999" green="0.76838296650000004" blue="0.78915339709999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                <state key="normal" title=",">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapFloatButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="deR-RY-Bei"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -116,7 +127,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="e5M-ww-B3O">
-                                        <rect key="frame" x="232" y="0.0" width="82" height="152"/>
+                                        <rect key="frame" x="232" y="0.0" width="82" height="206"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdG-Q6-4Mj">
                                                 <rect key="frame" x="0.0" y="0.0" width="82" height="44"/>
@@ -149,6 +160,17 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="tappedNumberButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bs8-U3-DST"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f5L-kA-vTO">
+                                                <rect key="frame" x="0.0" y="162" width="82" height="44"/>
+                                                <color key="backgroundColor" red="0.74834197759999999" green="0.76838296650000004" blue="0.78915339709999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                <state key="normal" title="C">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapCleanButton" destination="BYZ-38-t0r" eventType="touchUpInside" id="gse-JG-T7a"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -264,6 +286,8 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="cleanButton" destination="f5L-kA-vTO" id="8Fh-YA-kzm"/>
+                        <outlet property="floatButton" destination="ifG-nm-kBT" id="ZcL-dX-T0G"/>
                         <outlet property="textView" destination="CT0-fb-Raf" id="TCH-LP-UlP"/>
                         <outletCollection property="numberButtons" destination="GgJ-QU-2gW" collectionClass="NSMutableArray" id="808-dp-a1w"/>
                         <outletCollection property="numberButtons" destination="6uw-jf-qlX" collectionClass="NSMutableArray" id="bHT-RM-Vdm"/>

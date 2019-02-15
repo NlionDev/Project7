@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Calculator {
     
@@ -15,7 +16,6 @@ class Calculator {
     var stringNumbers: [String] = [String()]
     var operators: [String] = ["+"]
     
-
     // MARK: - Methods
 
     func clear() {
@@ -33,6 +33,42 @@ class Calculator {
         stringNumbers.append("")
     }
     
+    func addFloatNumber() {
+        if let stringNumber = stringNumbers.last {
+            if stringNumber.isEmpty {
+                stringNumbers[stringNumbers.count-1] = "0."
+            } else {
+                var stringNumberMutable = stringNumber
+                stringNumberMutable += "."
+                stringNumbers[stringNumbers.count-1] = stringNumberMutable
+            }
+        }
+    }
+
+    func checkExpressionError(firstError: Error, secondError: Error) throws {
+        if let stringNumber = stringNumbers.last {
+            if stringNumber.isEmpty {
+                if stringNumbers.count == 1 {
+                    throw firstError
+                } else if stringNumbers.count != 1 {
+                    throw secondError
+                } else {
+                    return
+                }
+            }
+        }
+    }
+
+    func checkIfCanAddOperator(error: Error) throws {
+        if let stringNumber = stringNumbers.last {
+            if stringNumber.isEmpty {
+                throw error
+            } else {
+                return
+            }
+        }
+    }
+
     func addNewNumber(_ newNumber: Int) {
         if let stringNumber = stringNumbers.last {
             var stringNumberMutable = stringNumber
@@ -40,7 +76,7 @@ class Calculator {
             stringNumbers[stringNumbers.count-1] = stringNumberMutable
         }
     }
-    
+
     func updateValues() -> String {
         var text = ""
         for (i, stringNumber) in stringNumbers.enumerated() {
@@ -53,11 +89,11 @@ class Calculator {
         }
         return text
     }
-    
-    func calculateTotal() -> Int {
-        var total = 0
+
+    func calculateTotal() -> Float {
+        var total = Float(0)
         for (i, stringNumber) in stringNumbers.enumerated() {
-            if let number = Int(stringNumber) {
+            if let number = Float(stringNumber) {
                 if operators[i] == "+" {
                     total += number
                 } else if operators[i] == "-" {
