@@ -15,12 +15,7 @@ class ViewController: UIViewController {
     private let calculator = Calculator()
 
     // MARK: - Enumeration
-    
-    private enum errors: Error {
-        case inCorrectExpression
-        case startNewCalcul
-        case enterNumber
-    }
+
     
     // MARK: - Outlets
 
@@ -49,9 +44,9 @@ class ViewController: UIViewController {
 
     @IBAction private func plus() {
         do {
-            try calculator.checkIfCanAddOperator(error: errors.enterNumber)
-        } catch errors.enterNumber {
-            displayError(expressionError: .enterNumber)
+            try calculator.checkIfCanAddOperator()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
             return
         } catch {
             displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
@@ -64,9 +59,9 @@ class ViewController: UIViewController {
 
     @IBAction private func minus() {
         do {
-            try calculator.checkIfCanAddOperator(error: errors.enterNumber)
-        } catch errors.enterNumber {
-            displayError(expressionError: .enterNumber)
+            try calculator.checkIfCanAddOperator()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
             return
         } catch {
             displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
@@ -79,12 +74,9 @@ class ViewController: UIViewController {
 
     @IBAction private func equal() {
         do {
-            try calculator.checkExpressionError(firstError: errors.startNewCalcul, secondError: errors.inCorrectExpression)
-        } catch errors.inCorrectExpression {
-            displayError(expressionError: .inCorrectExpression)
-            return
-        } catch errors.startNewCalcul {
-            displayError(expressionError: .startNewCalcul)
+            try calculator.checkExpressionError()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
             return
         } catch {
             displayError(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
@@ -95,7 +87,7 @@ class ViewController: UIViewController {
 
     // MARK: - Methods
 
-    private func displayError(expressionError error: errors) {
+    private func displayError(_ error: Calculator.CalculatorError) {
         switch error {
         case .inCorrectExpression:
             displayError(alertTitle: "Expression Incorrect.", message: "Entrez une expression correct", actionTitle: "OK")

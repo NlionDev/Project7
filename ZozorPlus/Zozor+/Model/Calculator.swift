@@ -16,6 +16,14 @@ class Calculator {
     var stringNumbers: [String] = [String()]
     var operators: [String] = ["+"]
     
+    // MARK: - Enum
+    
+    enum CalculatorError: Error {
+        case inCorrectExpression
+        case startNewCalcul
+        case enterNumber
+    }
+    
     // MARK: - Methods
 
     func clear() {
@@ -45,26 +53,22 @@ class Calculator {
         }
     }
 
-    func checkExpressionError(firstError: Error, secondError: Error) throws {
+    func checkExpressionError() throws {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
                 if stringNumbers.count == 1 {
-                    throw firstError
+                    throw CalculatorError.startNewCalcul
                 } else if stringNumbers.count != 1 {
-                    throw secondError
-                } else {
-                    return
+                    throw CalculatorError.inCorrectExpression
                 }
             }
         }
     }
 
-    func checkIfCanAddOperator(error: Error) throws {
+    func checkIfCanAddOperator() throws {
         if let stringNumber = stringNumbers.last {
             if stringNumber.isEmpty {
-                throw error
-            } else {
-                return
+                throw CalculatorError.enterNumber
             }
         }
     }
