@@ -14,7 +14,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CountOnMe" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="CalculatorView" customModule="CountOnMe" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -195,35 +195,38 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u9t-JB-KHx">
                                         <rect key="frame" x="0.0" y="0.0" width="94.666666666666671" height="60"/>
-                                        <color key="backgroundColor" red="0.46913260918215349" green="0.71495165745856348" blue="0.62407517235679066" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.47058823529999999" green="0.7149516575" blue="0.62407517239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="+">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="plus" destination="BYZ-38-t0r" eventType="touchUpInside" id="wSX-dz-g1Q"/>
+                                            <action selector="plus" destination="BYZ-38-t0r" eventType="touchUpInside" id="UHv-3R-DmN"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1md-mv-IxN">
                                         <rect key="frame" x="109.66666666666666" y="0.0" width="94.666666666666657" height="60"/>
                                         <color key="backgroundColor" red="0.87294975828729282" green="0.37112226881503746" blue="0.32504552810982973" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="-">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="minus" destination="BYZ-38-t0r" eventType="touchUpInside" id="axZ-P6-JsH"/>
+                                            <action selector="minus" destination="BYZ-38-t0r" eventType="touchUpInside" id="jGS-p5-mo8"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D9e-qZ-ZAT">
                                         <rect key="frame" x="219.33333333333329" y="0.0" width="94.666666666666657" height="60"/>
                                         <color key="backgroundColor" red="0.94643473756906082" green="0.64318747398780474" blue="0.12665354139525944" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="42"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="=">
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="equal" destination="BYZ-38-t0r" eventType="touchUpInside" id="rHF-7s-zDj"/>
+                                            <action selector="equal" destination="BYZ-38-t0r" eventType="touchUpInside" id="met-jo-2YS"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -284,8 +287,15 @@
                                 <include reference="iao-Sf-IAn"/>
                             </mask>
                         </variation>
+                        <connections>
+                            <outlet property="equalButton" destination="D9e-qZ-ZAT" id="qTB-sj-eTn"/>
+                            <outlet property="minusButton" destination="1md-mv-IxN" id="PFD-Ir-dAw"/>
+                            <outlet property="operatorsStackView" destination="JCS-G8-93l" id="tzX-7d-eh7"/>
+                            <outlet property="plusButton" destination="u9t-JB-KHx" id="Zb8-R7-47k"/>
+                        </connections>
                     </view>
                     <connections>
+                        <outlet property="calculatorView" destination="8bC-Xf-vdC" id="Tng-KE-Qhk"/>
                         <outlet property="cleanButton" destination="f5L-kA-vTO" id="8Fh-YA-kzm"/>
                         <outlet property="floatButton" destination="ifG-nm-kBT" id="ZcL-dX-T0G"/>
                         <outlet property="textView" destination="CT0-fb-Raf" id="TCH-LP-UlP"/>

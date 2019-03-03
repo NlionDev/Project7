@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0385954B221058910008DB70 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0385954A221058910008DB70 /* TextView.swift */; };
 		0385954D2210651A0008DB70 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0385954C2210651A0008DB70 /* Calculator.swift */; };
+		03859552221C0BC80008DB70 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03859551221C0BC80008DB70 /* CalculatorView.swift */; };
 		C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADC1D7581BB00477020 /* AppDelegate.swift */; };
 		C926DADF1D7581BB00477020 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C926DADE1D7581BB00477020 /* ViewController.swift */; };
 		C926DAE21D7581BB00477020 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C926DAE01D7581BB00477020 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		0385954A221058910008DB70 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0385954C2210651A0008DB70 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
+		03859551221C0BC80008DB70 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		C926DAD91D7581BB00477020 /* CountOnMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountOnMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C926DADC1D7581BB00477020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C926DADE1D7581BB00477020 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,9 @@
 			isa = PBXGroup;
 			children = (
 				0385954A221058910008DB70 /* TextView.swift */,
+				03859551221C0BC80008DB70 /* CalculatorView.swift */,
+				C926DAE01D7581BB00477020 /* Main.storyboard */,
+				C926DAE51D7581BB00477020 /* LaunchScreen.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -128,10 +133,8 @@
 		C926DADB1D7581BB00477020 /* CountOnMe */ = {
 			isa = PBXGroup;
 			children = (
-				C926DAE51D7581BB00477020 /* LaunchScreen.storyboard */,
 				C926DAE81D7581BB00477020 /* Info.plist */,
 				C926DAE31D7581BB00477020 /* Assets.xcassets */,
-				C926DAE01D7581BB00477020 /* Main.storyboard */,
 				C926DADC1D7581BB00477020 /* AppDelegate.swift */,
 				038595452210455C0008DB70 /* Controller */,
 				03859543221045420008DB70 /* View */,
@@ -297,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0385954D2210651A0008DB70 /* Calculator.swift in Sources */,
+				03859552221C0BC80008DB70 /* CalculatorView.swift in Sources */,
 				C926DADF1D7581BB00477020 /* ViewController.swift in Sources */,
 				C926DADD1D7581BB00477020 /* AppDelegate.swift in Sources */,
 				0385954B221058910008DB70 /* TextView.swift in Sources */,

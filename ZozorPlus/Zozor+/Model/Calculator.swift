@@ -13,8 +13,8 @@ class Calculator {
     
     // MARK: - Properties
     
-    var stringNumbers: [String] = [String()]
-    var operators: [String] = ["+"]
+    private var stringNumbers: [String] = [String()]
+    private var operators: [String] = ["+"]
     
     // MARK: - Enum
     
@@ -31,12 +31,20 @@ class Calculator {
         operators = ["+"]
     }
     
-    func add() {
+    func add() throws {
+        if let stringNumber = stringNumbers.last,
+            stringNumber.isEmpty {
+            throw CalculatorError.enterNumber
+        }
         operators.append("+")
         stringNumbers.append("")
     }
     
-    func subtract() {
+    func subtract() throws {
+        if let stringNumber = stringNumbers.last,
+            stringNumber.isEmpty {
+            throw CalculatorError.enterNumber
+        }
         operators.append("-")
         stringNumbers.append("")
     }
@@ -53,26 +61,6 @@ class Calculator {
         }
     }
 
-    func checkExpressionError() throws {
-        if let stringNumber = stringNumbers.last {
-            if stringNumber.isEmpty {
-                if stringNumbers.count == 1 {
-                    throw CalculatorError.startNewCalcul
-                } else if stringNumbers.count != 1 {
-                    throw CalculatorError.inCorrectExpression
-                }
-            }
-        }
-    }
-
-    func checkIfCanAddOperator() throws {
-        if let stringNumber = stringNumbers.last {
-            if stringNumber.isEmpty {
-                throw CalculatorError.enterNumber
-            }
-        }
-    }
-
     func addNewNumber(_ newNumber: Int) {
         if let stringNumber = stringNumbers.last {
             var stringNumberMutable = stringNumber
@@ -81,7 +69,7 @@ class Calculator {
         }
     }
 
-    func updateValues() -> String {
+    func getNextString() -> String {
         var text = ""
         for (i, stringNumber) in stringNumbers.enumerated() {
             // Add operator
@@ -93,8 +81,13 @@ class Calculator {
         }
         return text
     }
-
-    func calculateTotal() -> Float {
+    
+    func calculateTotal() throws -> Float {
+        do {
+            try checkExpressionError()
+        } catch let error as Calculator.CalculatorError {
+            throw error
+        }
         var total = Float(0)
         for (i, stringNumber) in stringNumbers.enumerated() {
             if let number = Float(stringNumber) {
@@ -106,5 +99,16 @@ class Calculator {
             }
         }
         return total
+    }
+    
+    private func checkExpressionError() throws {
+        if let stringNumber = stringNumbers.last,
+            stringNumber.isEmpty {
+            if stringNumbers.count == 1 {
+                throw CalculatorError.startNewCalcul
+            } else if stringNumbers.count != 1 {
+                throw CalculatorError.inCorrectExpression
+            }
+        }
     }
 }
