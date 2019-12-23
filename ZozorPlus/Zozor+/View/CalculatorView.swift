@@ -9,51 +9,66 @@
 import UIKit
 
 protocol CalculatorViewDelegate: class {
-    func getTag(didSelectButton tag: Int)
+    
+    func calculatorView(_ calculatorView: CalculatorView, didSelectOperator op: CalculatorView.Operator)
 }
 
 class CalculatorView: UIView {
     
-    // MARK: - Outlets
-    
-    @IBOutlet private weak var plusButton: UIButton!
-    @IBOutlet private weak var minusButton: UIButton!
-    @IBOutlet private weak var equalButton: UIButton!
-    
-    // MARK: - Properties
+    // MARK: Properties
     
     weak var delegate: CalculatorViewDelegate?
     
-    // MARK: - Lifecycle
+    // MARK: - Enum
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        setPlusButtons()
-        setMinusButton()
-        setEqualButton()
+    enum Operator {
+        case plus
+        case minus
+        case equal
+    }
+    
+    // MARK: - Outlets
+    
+    @IBOutlet private weak var plusButton: UIButton! {
+        didSet {
+            plusButton.layer.cornerRadius = 10
+            plusButton.setTitleColor(#colorLiteral(red: 0.4691326092, green: 0.7149516575, blue: 0.6240751724, alpha: 1), for: .selected)
+        }
+    }
+    
+    @IBOutlet private weak var minusButton: UIButton! {
+        didSet {
+            minusButton.layer.cornerRadius = 10
+            minusButton.setTitleColor(#colorLiteral(red: 0.8751251101, green: 0.3733541965, blue: 0.3268560469, alpha: 1), for: .selected)
+        }
+    }
+    
+    @IBOutlet private weak var equalButton: UIButton! {
+        didSet {
+            equalButton.layer.cornerRadius = 10
+            equalButton.setTitleColor(#colorLiteral(red: 0.9439501166, green: 0.6425412893, blue: 0.1273810863, alpha: 1), for: .selected)
+        }
     }
     
     // MARK: - Actions
     
-    @objc private func didTapButton(_ sender: UIButton) {
-        delegate?.getTag(didSelectButton: sender.tag)
+    @IBAction func didTapPlusButton() {
+        selectPlusButton()
+        delegate?.calculatorView(self, didSelectOperator: .plus)
+        
+    }
+    
+    @IBAction func didTapMinusButton() {
+        selectMinusButton()
+        delegate?.calculatorView(self, didSelectOperator: .minus)
+    }
+    
+    @IBAction func didTapEqualButton() {
+        selectEqualButton()
+        delegate?.calculatorView(self, didSelectOperator: .equal)
     }
     
     // MARK: - Methods
-    
-    func setSelectedStyleForButton(buttonTag: Int) {
-        if buttonTag == 1 {
-            plusButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            plusButton.isSelected = true
-        } else if buttonTag == 2 {
-        minusButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        minusButton.isSelected = true
-        } else if buttonTag == 3 {
-            equalButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            equalButton.isSelected = true
-        }
-    }
     
     func setNormalStyleForButtons() {
         if plusButton.isSelected {
@@ -68,24 +83,18 @@ class CalculatorView: UIView {
         }
     }
     
-    private func setPlusButtons() {
-        plusButton.tag = 1
-        plusButton.layer.cornerRadius = 10
-        plusButton.setTitleColor(#colorLiteral(red: 0.4691326092, green: 0.7149516575, blue: 0.6240751724, alpha: 1), for: .selected)
-        plusButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+    private func selectPlusButton() {
+        plusButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        plusButton.isSelected = true
     }
     
-    private func setMinusButton() {
-        minusButton.tag = 2
-        minusButton.layer.cornerRadius = 10
-        minusButton.setTitleColor(#colorLiteral(red: 0.8751251101, green: 0.3733541965, blue: 0.3268560469, alpha: 1), for: .selected)
-        minusButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+    private func selectMinusButton() {
+        minusButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        minusButton.isSelected = true
     }
     
-    private func setEqualButton() {
-        equalButton.tag = 3
-        equalButton.layer.cornerRadius = 10
-        equalButton.setTitleColor(#colorLiteral(red: 0.9439501166, green: 0.6425412893, blue: 0.1273810863, alpha: 1), for: .selected)
-        equalButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+    private func selectEqualButton() {
+        equalButton.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        equalButton.isSelected = true
     }
 }

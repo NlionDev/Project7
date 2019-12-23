@@ -13,15 +13,21 @@ class ViewController: UIViewController {
     // MARK: - Properties
 
     private let calculator = Calculator()
-    var buttonClickedTag: Int?
-
+    
     // MARK: - Outlets
 
-    @IBOutlet private weak var calculatorView: CalculatorView!
-    @IBOutlet private weak var textView: TextView!
+    @IBOutlet weak var calculatorView: CalculatorView!
+    @IBOutlet private weak var displayView: DisplayView!
     @IBOutlet private var numberButtons: [UIButton]!
     @IBOutlet private weak var floatButton: UIButton!
     @IBOutlet private weak var cleanButton: UIButton!
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        calculatorView.delegate = self
+    }
     
     // MARK: - Action
 
@@ -42,52 +48,6 @@ class ViewController: UIViewController {
         calculator.addFloatNumber()
         updateDisplay()
         calculatorView.setNormalStyleForButtons()
-    }
-
-    @IBAction private func plus() {
-        do {
-            try calculator.add()
-            updateDisplay()
-            if let buttonTag = buttonClickedTag {
-                calculatorView.setSelectedStyleForButton(buttonTag: buttonTag)
-            }
-        } catch let error as Calculator.CalculatorError {
-            displayError(error)
-        } catch {
-            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
-            cleanDisplay()
-        }
-    }
-
-    @IBAction private func minus() {
-        do {
-            try calculator.subtract()
-            updateDisplay()
-            if let buttonTag = buttonClickedTag {
-                calculatorView.setSelectedStyleForButton(buttonTag: buttonTag)
-            }
-        } catch let error as Calculator.CalculatorError {
-            displayError(error)
-        } catch {
-            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
-            cleanDisplay()
-        }
-    }
-
-    @IBAction private func equal() {
-        do {
-            let total = try calculator.calculateTotal()
-            textView.text = "\(total)"
-            calculator.clear()
-            if let buttonTag = buttonClickedTag {
-                calculatorView.setSelectedStyleForButton(buttonTag: buttonTag)
-            }
-        } catch let error as Calculator.CalculatorError {
-            displayError(error)
-        } catch {
-            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
-            cleanDisplay()
-        }
     }
 
     // MARK: - Methods
@@ -114,17 +74,65 @@ class ViewController: UIViewController {
 
     private func updateDisplay() {
         let text = calculator.getNextString()
-        textView.text = text
+        displayView.text = text
     }
 
     private func cleanDisplay() {
         calculator.clear()
-        textView.text = "0"
+        displayView.text = "0"
     }
 }
 
+// MARK: - Extensions
+
 extension ViewController: CalculatorViewDelegate {
-    func getTag(didSelectButton tag: Int) {
-        buttonClickedTag = tag
+    
+    func calculatorView(_ calculatorView: CalculatorView, didSelectOperator op: CalculatorView.Operator) {
+        switch op {
+            case .plus:
+            selectPlusOperator()
+            case .minus:
+            selectMinusOperator()
+            case .equal:
+            selectEqualOperator()
+        }
+    }
+    
+    private func selectPlusOperator() {
+        do {
+            try calculator.plus()
+            updateDisplay()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
+        } catch {
+            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
+        }
+    }
+    
+    private func selectMinusOperator() {
+        do {
+            try calculator.minus()
+            updateDisplay()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
+        } catch {
+            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
+        }
+    }
+    
+    private func selectEqualOperator() {
+        do {
+            let total = try calculator.calculateTotal()
+            displayView.text = "\(total)"
+            calculator.clear()
+        } catch let error as Calculator.CalculatorError {
+            displayError(error)
+        } catch {
+            displayAlert(alertTitle: "Erreur Inconnue.", message: "Une erreur est survenue, essayez à nouveau.", actionTitle: "Ok")
+            cleanDisplay()
+        }
     }
 }
+

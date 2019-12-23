@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TextView: UITextView {
+class DisplayView: UITextView {
 
     // MARK: - LifeCycle
 

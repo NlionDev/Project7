@@ -17,151 +17,118 @@ class Zozor_Tests: XCTestCase {
         super.setUp()
         calculator = Calculator()
     }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testGivenArraysAreNotClear_WhenClear_ThenArraysHaveDefaultValues() {
+
+    func testGivenHaveValuesInArrays_WhenClear_ThenArraysHaveDefaultValues() {
         calculator.stringNumbers.append("45")
         calculator.operators.append("-")
         
         calculator.clear()
         
-        XCTAssert(calculator.stringNumbers[0] == "")
-        XCTAssert(calculator.operators[0] == "+")
+        XCTAssertEqual(calculator.stringNumbers[0], "")
+        XCTAssertEqual(calculator.operators[0], "+")
         XCTAssertEqual(calculator.stringNumbers.count, 1)
     }
     
-    func testGivenHaveNoOperators_WhenAddNumbers_ThenPlusIsAddToOperators() {
+    func testGivenHaveFive_WhenTapOnPlusButton_ThenPlusIsAddToOperators() {
         calculator.addNewNumber(5)
-        do {
-            try calculator.add()
-            XCTAssert(calculator.operators[1] == "+")
-            XCTAssert(calculator.stringNumbers[1] == "")
-        } catch {
-            XCTFail()
+        
+        XCTAssertNoThrow(try calculator.plus())
+        
+        XCTAssertEqual(calculator.operators[1], "+")
+        XCTAssertEqual(calculator.stringNumbers[1], "")
+    }
+    
+    func testGivenHaveNoNumbers_WhenTapOnPlusButton_ThenEnterNumberErrorAppear() {
+        XCTAssertThrowsError(try calculator.plus()) { error in
+            XCTAssertNotNil(error as? Calculator.CalculatorError)
+            XCTAssertEqual(error as! Calculator.CalculatorError, Calculator.CalculatorError.enterNumber)
         }
     }
     
-    func testGivenStringNumbersIsEmpty_WhenAddNumbers_ThenErrorAppear() {
-        do {
-            try calculator.add()
-        } catch {
-            XCTFail()
-        }
-    }
-    
-    func testGivenStringNumbersIsEmpty_WhenSubtractNumbers_ThenErrorAppear() {
-        do {
-            try calculator.subtract()
-        } catch {
-            XCTFail()
+    func testGivenHaveNoNumbers_WhenTapOnMinusButton_ThenErrorAppear() {
+        XCTAssertThrowsError(try calculator.minus()) { error in
+            XCTAssertNotNil(error as? Calculator.CalculatorError)
+            XCTAssertEqual(error as! Calculator.CalculatorError, Calculator.CalculatorError.enterNumber)
         }
     }
 
     
-    func testGivenHaveNoOperators_WhenSubtractNumbers_ThenMinusIsAddToOperators() {
-       calculator.addNewNumber(5)
-        do {
-            try calculator.subtract()
-            XCTAssert(calculator.operators[1] == "-")
-            XCTAssert(calculator.stringNumbers[1] == "")
-        } catch {
-            XCTFail()
-        }
-    }
-    
-    func testGivenStringNumberIsEmpty_WhenAddDecimalsNumbers_ThenStringNumbersShouldBeFloat() {
-      calculator.addFloatNumber()
+    func testGivenHaveFive_WhenTapOnMinusButton_ThenMinusIsAddToOperators() {
+        calculator.addNewNumber(5)
         
-        XCTAssert(calculator.stringNumbers.last == "0.")
+        XCTAssertNoThrow(try calculator.minus())
+        XCTAssertEqual(calculator.operators[1], "-")
+        XCTAssertEqual(calculator.stringNumbers[1], "")
     }
     
-    func testGivenLastStringNumberIsTwo_WhenAddDecimalsNumbers_ThenStringNumbersShouldBeTwoPoint() {
+    func testGivenHaveNoNumbers_WhenTapOnDecimalButton_ThenNumberShouldBeZeroPoint() {
+        calculator.addFloatNumber()
+        
+        XCTAssertEqual(calculator.stringNumbers.last, "0.")
+    }
+    
+    func testGivenHaveTwo_WhenTapOnDecimalButton_ThenStringNumbersShouldBeTwoPoint() {
         calculator.stringNumbers[0] = "2"
 
         calculator.addFloatNumber()
 
-        XCTAssert(calculator.stringNumbers.last == "2.")
+        XCTAssertEqual(calculator.stringNumbers.last, "2.")
     }
     
-    func testGivenLastStringNumberIsEmpty_WhenNumberIsAdd_ThenNumberShouldBeReturned() {
+    func testGivenHaveNoNumbers_WhenTapOnFiveButton_ThenFiveShouldBeReturned() {
+        
         calculator.addNewNumber(5)
         
         let nextString = calculator.getNextString()
-        
         XCTAssertEqual(nextString, "5")
     }
     
-    func testGivenLastStringNumberIsNumber_WhenOperatorIsAdd_ThenNumberAndOperatorShouldBeReturned() {
+    func testGivenHaveFive_WhenTapOnPlusButton_ThenStringToDisplayShouldBeFiveAndPlus() {
         calculator.addNewNumber(5)
-        do {
-            try calculator.add()
-        } catch {
-            XCTFail()
-        }
         
-         let nextString = calculator.getNextString()
-
+        XCTAssertNoThrow(try calculator.plus())
+        
+        let nextString = calculator.getNextString()
         XCTAssertEqual(nextString, "5+")
     }
     
-    func testGivenHaveAddition_WhenTotalIsCalculate_ThenGoodResultShouldBeReturned() {
-        calculator.addNewNumber(5)
-        do {
-            try calculator.add()
-        } catch {
-            XCTFail()
-        }
+    func testGivenHaveFivePlusFive_WhenTotalIsCalculate_ThenResultShouldBeTen() {
         calculator.addNewNumber(5)
         
-        do {
-            let total = try calculator.calculateTotal()
-            XCTAssertEqual(total, 10.0)
-        } catch {
-            XCTFail()
-        }
+        XCTAssertNoThrow(try calculator.plus())
+        
+        calculator.addNewNumber(5)
+        
+        let total = try? calculator.calculateTotal()
+        XCTAssertEqual(total, 10.0)
     }
     
-    func testGivenHaveSubstraction_WhenTotalIsCalculate_ThenGoodResultShouldBeReturned() {
+    func testGivenHaveEightMinusFive_WhenTotalIsCalculate_ThenResultShouldBeThree() {
         calculator.addNewNumber(8)
-        do {
-            try calculator.subtract()
-        } catch {
-            XCTFail()
-        }
+        
+        XCTAssertNoThrow(try calculator.minus())
+        
         calculator.addNewNumber(5)
         
-        do {
-            let total = try calculator.calculateTotal()
-            XCTAssertEqual(total, 3.0)
-        } catch {
-            XCTFail()
+        let total = try? calculator.calculateTotal()
+        XCTAssertEqual(total, 3.0)
+    }
+    
+    func testGivenHaveFivePlus_WhenTotalIsCalculate_ThenIncorrectExpressionErrorShouldAppear() {
+        calculator.addNewNumber(5)
+        XCTAssertNoThrow(try calculator.plus())
+        
+        XCTAssertThrowsError(try calculator.calculateTotal()) { error in
+            XCTAssertNotNil(error as? Calculator.CalculatorError)
+            XCTAssertEqual(error as! Calculator.CalculatorError, Calculator.CalculatorError.inCorrectExpression)
         }
     }
     
-    func testGivenHaveInvalidOperation_WhenTotalIsCalculate_ThenErrorShouldBeAppear() {
-        calculator.addNewNumber(5)
-        do {
-            try calculator.add()
-        } catch {
-            XCTFail()
-        }
+    func testGivenHaveNoNumbers_WhenTotalIsCalculate_ThenStartNewCalculErrorShouldAppear() {
         
-        do {
-            let total = try calculator.calculateTotal()
-        } catch {
-            XCTFail()
-        }
-    }
-    
-    func testGivenStringNumbersIsEmpty_WhenTotalIsCalculate_ThenErrorShouldBeAppear() {
-        do {
-            let total = try calculator.calculateTotal()
-        } catch {
-            XCTFail()
+        XCTAssertThrowsError(try calculator.calculateTotal()) { error in
+            XCTAssertNotNil(error as? Calculator.CalculatorError)
+            XCTAssertEqual(error as! Calculator.CalculatorError, Calculator.CalculatorError.startNewCalcul)
         }
     }
 

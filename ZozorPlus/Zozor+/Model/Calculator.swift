@@ -13,8 +13,8 @@ class Calculator {
     
     // MARK: - Properties
     
-    private var stringNumbers: [String] = [String()]
-    private var operators: [String] = ["+"]
+    var stringNumbers: [String] = [String()]
+    var operators: [String] = ["+"]
     
     // MARK: - Enum
     
@@ -31,7 +31,7 @@ class Calculator {
         operators = ["+"]
     }
     
-    func add() throws {
+    func plus() throws {
         if let stringNumber = stringNumbers.last,
             stringNumber.isEmpty {
             throw CalculatorError.enterNumber
@@ -40,7 +40,7 @@ class Calculator {
         stringNumbers.append("")
     }
     
-    func subtract() throws {
+    func minus() throws {
         if let stringNumber = stringNumbers.last,
             stringNumber.isEmpty {
             throw CalculatorError.enterNumber
